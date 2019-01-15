@@ -9,11 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var aurelia_framework_1 = require("aurelia-framework");
 var open_id_connect_authorize_step_1 = require("./open-id-connect-authorize-step");
 var open_id_connect_configuration_manager_1 = require("./open-id-connect-configuration-manager");
 var open_id_connect_logger_1 = require("./open-id-connect-logger");
 var open_id_connect_navigation_strategies_1 = require("./open-id-connect-navigation-strategies");
+var aurelia_framework_1 = require("aurelia-framework");
 var OpenIdConnectRouting = (function () {
     function OpenIdConnectRouting(openIdConnectConfiguration, openIdConnectNavigationStrategies, $window, logger) {
         this.openIdConnectConfiguration = openIdConnectConfiguration;
@@ -38,7 +38,8 @@ var OpenIdConnectRouting = (function () {
                     return _this.openIdConnectNavigationStrategies.signInRedirectCallback(instruction);
                 }
             },
-            route: this.getPath(this.openIdConnectConfiguration.redirectUri),
+            route: this.getPath(this.openIdConnectConfiguration.redirectUri)
+                .replace(routerConfiguration.options.root || '/', '/'),
         });
     };
     OpenIdConnectRouting.prototype.addLogoutRedirectRoute = function (routerConfiguration) {
@@ -48,7 +49,8 @@ var OpenIdConnectRouting = (function () {
             navigationStrategy: function (instruction) {
                 return _this.openIdConnectNavigationStrategies.signOutRedirectCallback(instruction);
             },
-            route: this.getPath(this.openIdConnectConfiguration.postLogoutRedirectUri),
+            route: this.getPath(this.openIdConnectConfiguration.postLogoutRedirectUri)
+                .replace(routerConfiguration.options.root || '/', '/'),
         });
     };
     OpenIdConnectRouting.prototype.isSilentLogin = function () {

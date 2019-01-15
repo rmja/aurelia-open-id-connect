@@ -7,11 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { autoinject } from 'aurelia-framework';
 import OpenIdConnectAuthorizeStep from './open-id-connect-authorize-step';
 import OpenIdConnectConfigurationManager from './open-id-connect-configuration-manager';
 import OpenIdConnectLogger from './open-id-connect-logger';
 import OpenIdConnectNavigationStrategies from './open-id-connect-navigation-strategies';
+import { autoinject } from 'aurelia-framework';
 let OpenIdConnectRouting = class OpenIdConnectRouting {
     constructor(openIdConnectConfiguration, openIdConnectNavigationStrategies, $window, logger) {
         this.openIdConnectConfiguration = openIdConnectConfiguration;
@@ -35,7 +35,8 @@ let OpenIdConnectRouting = class OpenIdConnectRouting {
                     return this.openIdConnectNavigationStrategies.signInRedirectCallback(instruction);
                 }
             },
-            route: this.getPath(this.openIdConnectConfiguration.redirectUri),
+            route: this.getPath(this.openIdConnectConfiguration.redirectUri)
+                .replace(routerConfiguration.options.root || '/', '/'),
         });
     }
     addLogoutRedirectRoute(routerConfiguration) {
@@ -44,7 +45,8 @@ let OpenIdConnectRouting = class OpenIdConnectRouting {
             navigationStrategy: (instruction) => {
                 return this.openIdConnectNavigationStrategies.signOutRedirectCallback(instruction);
             },
-            route: this.getPath(this.openIdConnectConfiguration.postLogoutRedirectUri),
+            route: this.getPath(this.openIdConnectConfiguration.postLogoutRedirectUri)
+                .replace(routerConfiguration.options.root || '/', '/'),
         });
     }
     isSilentLogin() {

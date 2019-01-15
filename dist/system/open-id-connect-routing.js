@@ -1,4 +1,4 @@
-System.register(["aurelia-framework", "./open-id-connect-authorize-step", "./open-id-connect-configuration-manager", "./open-id-connect-logger", "./open-id-connect-navigation-strategies"], function (exports_1, context_1) {
+System.register(["./open-id-connect-authorize-step", "./open-id-connect-configuration-manager", "./open-id-connect-logger", "./open-id-connect-navigation-strategies", "aurelia-framework"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9,13 +9,10 @@ System.register(["aurelia-framework", "./open-id-connect-authorize-step", "./ope
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
+    var open_id_connect_authorize_step_1, open_id_connect_configuration_manager_1, open_id_connect_logger_1, open_id_connect_navigation_strategies_1, aurelia_framework_1, OpenIdConnectRouting;
     var __moduleName = context_1 && context_1.id;
-    var aurelia_framework_1, open_id_connect_authorize_step_1, open_id_connect_configuration_manager_1, open_id_connect_logger_1, open_id_connect_navigation_strategies_1, OpenIdConnectRouting;
     return {
         setters: [
-            function (aurelia_framework_1_1) {
-                aurelia_framework_1 = aurelia_framework_1_1;
-            },
             function (open_id_connect_authorize_step_1_1) {
                 open_id_connect_authorize_step_1 = open_id_connect_authorize_step_1_1;
             },
@@ -27,6 +24,9 @@ System.register(["aurelia-framework", "./open-id-connect-authorize-step", "./ope
             },
             function (open_id_connect_navigation_strategies_1_1) {
                 open_id_connect_navigation_strategies_1 = open_id_connect_navigation_strategies_1_1;
+            },
+            function (aurelia_framework_1_1) {
+                aurelia_framework_1 = aurelia_framework_1_1;
             }
         ],
         execute: function () {
@@ -54,7 +54,8 @@ System.register(["aurelia-framework", "./open-id-connect-authorize-step", "./ope
                                 return _this.openIdConnectNavigationStrategies.signInRedirectCallback(instruction);
                             }
                         },
-                        route: this.getPath(this.openIdConnectConfiguration.redirectUri),
+                        route: this.getPath(this.openIdConnectConfiguration.redirectUri)
+                            .replace(routerConfiguration.options.root || '/', '/'),
                     });
                 };
                 OpenIdConnectRouting.prototype.addLogoutRedirectRoute = function (routerConfiguration) {
@@ -64,7 +65,8 @@ System.register(["aurelia-framework", "./open-id-connect-authorize-step", "./ope
                         navigationStrategy: function (instruction) {
                             return _this.openIdConnectNavigationStrategies.signOutRedirectCallback(instruction);
                         },
-                        route: this.getPath(this.openIdConnectConfiguration.postLogoutRedirectUri),
+                        route: this.getPath(this.openIdConnectConfiguration.postLogoutRedirectUri)
+                            .replace(routerConfiguration.options.root || '/', '/'),
                     });
                 };
                 OpenIdConnectRouting.prototype.isSilentLogin = function () {
