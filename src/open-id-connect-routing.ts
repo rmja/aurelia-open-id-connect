@@ -1,12 +1,13 @@
-import { autoinject } from 'aurelia-framework';
 import {
   NavigationInstruction,
   RouterConfiguration,
 } from 'aurelia-router';
+
 import OpenIdConnectAuthorizeStep from './open-id-connect-authorize-step';
 import OpenIdConnectConfigurationManager from './open-id-connect-configuration-manager';
 import OpenIdConnectLogger from './open-id-connect-logger';
 import OpenIdConnectNavigationStrategies from './open-id-connect-navigation-strategies';
+import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export default class OpenIdConnectRouting {
@@ -34,7 +35,8 @@ export default class OpenIdConnectRouting {
           return this.openIdConnectNavigationStrategies.signInRedirectCallback(instruction);
         }
       },
-      route: this.getPath(this.openIdConnectConfiguration.redirectUri),
+      route: this.getPath(this.openIdConnectConfiguration.redirectUri)
+        .replace(routerConfiguration.options.root || '/', '/'),
     });
   }
 
@@ -44,7 +46,8 @@ export default class OpenIdConnectRouting {
       navigationStrategy: (instruction: NavigationInstruction) => {
         return this.openIdConnectNavigationStrategies.signOutRedirectCallback(instruction);
       },
-      route: this.getPath(this.openIdConnectConfiguration.postLogoutRedirectUri),
+      route: this.getPath(this.openIdConnectConfiguration.postLogoutRedirectUri)
+        .replace(routerConfiguration.options.root || '/', '/'),
     });
   }
 
