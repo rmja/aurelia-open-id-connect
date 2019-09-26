@@ -8,5 +8,5 @@ export default class OpenIdConnectAuthorizeStep implements PipelineStep {
     private logger;
     constructor(userManager: UserManager, configuration: OpenIdConnectConfigurationManager, logger: OpenIdConnectLogger);
     run(navigationInstruction: NavigationInstruction, next: Next): Promise<any>;
-    private requiresRole;
+    private requiresRole(navigationInstruction, role);
 }

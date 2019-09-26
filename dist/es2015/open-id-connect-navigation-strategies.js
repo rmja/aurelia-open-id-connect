@@ -15,16 +15,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { LoginRedirectKey } from './open-id-connect-constants';
-import OpenIdConnectConfigurationManager from './open-id-connect-configuration-manager';
-import OpenIdConnectLogger from './open-id-connect-logger';
-import { UserManager } from 'oidc-client';
 import { autoinject } from 'aurelia-framework';
+import { UserManager } from 'oidc-client';
+import OpenIdConnectConfigurationManager from './open-id-connect-configuration-manager';
+import { LoginRedirectKey } from './open-id-connect-constants';
+import OpenIdConnectLogger from './open-id-connect-logger';
 let OpenIdConnectNavigationStrategies = class OpenIdConnectNavigationStrategies {
-    constructor(logger, openIdConnectConfiguration, userManager) {
+    constructor(logger, openIdConnectConfiguration, userManager, $window) {
         this.logger = logger;
         this.openIdConnectConfiguration = openIdConnectConfiguration;
         this.userManager = userManager;
+        this.$window = $window;
     }
     signInRedirectCallback(instruction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -36,9 +37,7 @@ let OpenIdConnectNavigationStrategies = class OpenIdConnectNavigationStrategies 
                     redirectRoute = user.state[LoginRedirectKey];
                 }
             });
-            const navigationInstruction = () => {
-                instruction.config.redirect = redirectRoute;
-            };
+            const navigationInstruction = () => this.redirectAfterCallback(instruction, redirectRoute);
             return this.runHandlerAndCompleteNavigationInstruction(callbackHandler, navigationInstruction);
         });
     }
@@ -56,10 +55,12 @@ let OpenIdConnectNavigationStrategies = class OpenIdConnectNavigationStrategies 
             const args = {};
             return this.userManager.signoutRedirectCallback(args);
         });
-        const navigationInstruction = () => {
-            instruction.config.redirect = this.openIdConnectConfiguration.logoutRedirectRoute;
-        };
+        const navigationInstruction = () => this.redirectAfterCallback(instruction, this.openIdConnectConfiguration.logoutRedirectRoute);
         return this.runHandlerAndCompleteNavigationInstruction(callbackHandler, navigationInstruction);
+    }
+    redirectAfterCallback(instruction, route) {
+        this.$window.history.pushState({}, '', route);
+        instruction.config.redirect = route;
     }
     runHandlerAndCompleteNavigationInstruction(callbackHandler, navigationInstruction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -81,7 +82,8 @@ OpenIdConnectNavigationStrategies = __decorate([
     autoinject,
     __metadata("design:paramtypes", [OpenIdConnectLogger,
         OpenIdConnectConfigurationManager,
-        UserManager])
+        UserManager,
+        Window])
 ], OpenIdConnectNavigationStrategies);
 export default OpenIdConnectNavigationStrategies;
 //# sourceMappingURL=open-id-connect-navigation-strategies.js.map

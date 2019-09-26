@@ -1,14 +1,16 @@
 import { NavigationInstruction } from 'aurelia-router';
+import { UserManager } from 'oidc-client';
 import OpenIdConnectConfigurationManager from './open-id-connect-configuration-manager';
 import OpenIdConnectLogger from './open-id-connect-logger';
-import { UserManager } from 'oidc-client';
 export default class OpenIdConnectNavigationStrategies {
     private logger;
     private openIdConnectConfiguration;
     private userManager;
-    constructor(logger: OpenIdConnectLogger, openIdConnectConfiguration: OpenIdConnectConfigurationManager, userManager: UserManager);
+    private $window;
+    constructor(logger: OpenIdConnectLogger, openIdConnectConfiguration: OpenIdConnectConfigurationManager, userManager: UserManager, $window: Window);
     signInRedirectCallback(instruction: NavigationInstruction): Promise<any>;
     silentSignInCallback(instruction: NavigationInstruction): Promise<any>;
     signOutRedirectCallback(instruction: NavigationInstruction): Promise<any>;
-    private runHandlerAndCompleteNavigationInstruction;
+    private redirectAfterCallback(instruction, route);
+    private runHandlerAndCompleteNavigationInstruction(callbackHandler, navigationInstruction);
 }
